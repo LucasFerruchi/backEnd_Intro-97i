@@ -1,8 +1,13 @@
 const express = require("express");
+//CORS
+const cors = require("cors");
 
 class Server {
   constructor() {
     this.app = express();
+
+    //Puerto
+    this.port = process.env.PORT;
 
     //Path
     this.usuariosPath = "/api/usuarios";
@@ -15,7 +20,8 @@ class Server {
   }
 
   middlewares() {
-    //! CORS??????
+    // CORS
+    this.app.use(cors());
 
     //Mostrar carpeta publica
     this.app.use(express.static("public"));
@@ -26,8 +32,8 @@ class Server {
   }
 
   listen() {
-    this.app.listen(3000, () => {
-      console.log("Server Online");
+    this.app.listen(this.port, () => {
+      console.log("Server Online", this.port);
     });
   }
 }
