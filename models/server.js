@@ -33,6 +33,8 @@ class Server {
     // CORS
     this.app.use(cors());
 
+    this.app.use(express.json());
+
     //Mostrar carpeta publica
     this.app.use(express.static("public"));
   }

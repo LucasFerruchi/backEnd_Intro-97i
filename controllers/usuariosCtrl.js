@@ -13,7 +13,11 @@ const usuariosGet = (req = request, res = response) => {
 
 //Controlador POST
 const usuariosPost = (req = request, res = response) => {
+  const datos = req.body;
+  // const { nombre, correo, password, rol } = datos;
+
   res.json({
+    datos,
     mensaje: "envio el mensaje",
   });
 };
