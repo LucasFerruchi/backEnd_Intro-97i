@@ -2,6 +2,7 @@ const { Router } = require("express");
 const { check } = require("express-validator");
 const { validarCampos } = require("../middlewares/validar_campos");
 const router = Router();
+const { esMailValido, esRolValido } = require("../helpers/db_validators");
 
 const {
   usuariosGet,
@@ -23,6 +24,8 @@ router.post(
       "La contraseña debe tener como minimo 6 caracteres"
     ).isLength({ min: 6 }),
     check("correo", "no es un correo valido!").isEmail(),
+    check("correo").custom(esMailValido),
+    check("rol").custom(esRolValido),
     validarCampos,
   ],
   usuariosPost
