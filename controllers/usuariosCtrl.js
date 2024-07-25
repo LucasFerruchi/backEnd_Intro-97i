@@ -3,13 +3,27 @@ const Usuario = require("../models/usuario");
 const bcrypt = require("bcryptjs");
 
 //Controlador GET
-const usuariosGet = (req = request, res = response) => {
-  const { limit, Key } = req.query;
+const usuariosGet = async (req = request, res = response) => {
+  //Pedido de lista completa
+  // const usuarios = await Usuario.find();
+
+  const { desde = 0, limite = 0 } = req.query;
+
+  const estadoTrue = { estado: true };
+
+  // const usuarios = await Usuario.find().skip(desde).limit(limite);
+  // const total = await Usuario.countDocuments();
+
+  //Optimizar respuestas
+  const [total, usuarios] = await Promise.all([
+    Usuario.countDocuments(estadoTrue),
+    Usuario.find(estadoTrue).skip(desde).limit(limite),
+  ]);
 
   res.json({
-    mensaje: "recibo el mensaje",
-    limit,
-    //! Key,
+    mensaje: "lista de usuarios",
+    total,
+    usuarios,
   });
 };
 
@@ -56,9 +70,28 @@ const usuariosPut = async (req = request, res = response) => {
 };
 
 //Controlador DELETE
-const usuariosDelete = (req = request, res = response) => {
+const usuariosDelete = async (req = request, res = response) => {
+  const { id } = req.params;
+
+  const usuario = await Usuario.findById(id);
+
+  //Verificar estado
+  if (!usuario.estado) {
+    return res.json({
+      msg: "El USUARIO ya esta inactivo!",
+    });
+  }
+
+  //Cambiar el valor del estado
+  const usuarioInactivo = await Usuario.findByIdAndUpdate(
+    id,
+    { estado: false },
+    { new: true }
+  );
+
   res.json({
-    mensaje: "elimino datos",
+    mensaje: "Datos eliminados!",
+    usuarioInactivo,
   });
 };
 
