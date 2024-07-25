@@ -17,7 +17,16 @@ const esRolValido = async (rol) => {
   }
 };
 
+const esIdValido = async (id) => {
+  const exiteUsuario = await Usuario.findById({ id });
+
+  if (exiteUsuario) {
+    throw new Error(`El correo ${id} ya existe en la base de datos!`);
+  }
+};
+
 module.exports = {
   esMailValido,
   esRolValido,
+  esIdValido,
 };
