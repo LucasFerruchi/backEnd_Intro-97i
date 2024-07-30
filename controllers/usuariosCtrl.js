@@ -73,6 +73,8 @@ const usuariosPut = async (req = request, res = response) => {
 const usuariosDelete = async (req = request, res = response) => {
   const { id } = req.params;
 
+  const usuarioAdmin = req.usuario;
+
   // //!Eliminar datos de la DB
   // const usuarioEliminado = await Usuario.findByIdAndDelete(id);
 
@@ -97,6 +99,7 @@ const usuariosDelete = async (req = request, res = response) => {
     mensaje: "Datos eliminados!",
     usuarioInactivo,
     // usuarioEliminado,
+    usuarioAdmin,
   });
 };
 
