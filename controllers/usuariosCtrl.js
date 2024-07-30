@@ -73,6 +73,10 @@ const usuariosPut = async (req = request, res = response) => {
 const usuariosDelete = async (req = request, res = response) => {
   const { id } = req.params;
 
+  // //!Eliminar datos de la DB
+  // const usuarioEliminado = await Usuario.findByIdAndDelete(id);
+
+  //Cambiar ESTADO del objeto
   const usuario = await Usuario.findById(id);
 
   //Verificar estado
@@ -92,6 +96,7 @@ const usuariosDelete = async (req = request, res = response) => {
   res.json({
     mensaje: "Datos eliminados!",
     usuarioInactivo,
+    // usuarioEliminado,
   });
 };
 
