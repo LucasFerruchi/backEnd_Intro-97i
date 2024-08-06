@@ -19,7 +19,10 @@ const {
 } = require("../controllers/usuariosCtrl");
 
 //Ruta GET
-router.get("/", usuariosGet);
+router.get("/", [validarJWT, esAdminRol], usuariosGet);
+
+//Ruta GET - USUARIO
+router.get("/:id", [validarJWT], usuariosGet);
 
 //Ruta POST - register
 router.post(
@@ -42,6 +45,7 @@ router.post(
 router.put(
   "/:id",
   [
+    validarJWT,
     check("id", "No es un ID valido!").isMongoId(),
     check("id").custom(esIdValido),
     validarCampos,
