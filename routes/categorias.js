@@ -3,6 +3,8 @@ const {
   crearCategoria,
   obtenerCategorias,
   obtenerCategoriaID,
+  borrarCategoria,
+  actualizarCategoria,
 } = require("../controllers/categoriasCtrl");
 const { check } = require("express-validator");
 const { esAdminRol } = require("../middlewares/validar_roles");
@@ -26,6 +28,31 @@ router.post(
     validarCampos,
   ],
   crearCategoria
+);
+
+router.put(
+  "/:id",
+  [
+    validarJWT,
+    esAdminRol,
+    check("nombre", "El nombre es obligatorio").notEmpty(),
+    check("id", "El id no es valido").isMongoId(),
+    check("id").custom(esCategoriaValido),
+    validarCampos,
+  ],
+  actualizarCategoria
+);
+
+router.delete(
+  "/:id",
+  [
+    validarJWT,
+    esAdminRol,
+    check("id", "El id no es valido").isMongoId(),
+    check("id").custom(esCategoriaValido),
+    validarCampos,
+  ],
+  borrarCategoria
 );
 
 module.exports = router;
