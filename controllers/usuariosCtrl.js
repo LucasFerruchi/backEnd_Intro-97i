@@ -84,7 +84,7 @@ const usuariosDelete = async (req = request, res = response) => {
   //Verificar estado
   if (!usuario.estado) {
     return res.json({
-      msg: "El USUARIO ya esta inactivo!",
+      msg: "El usuario ya esta inactivo!",
     });
   }
 

@@ -1,6 +1,39 @@
 const { response, request } = require("express");
 const Curso = require("../models/curso");
 
+//CONTROLADORES GET
+
+const obtenerCursos = async (req = request, res = response) => {
+  const { desde = 0, limite = 0 } = req.query;
+  const query = { estado: true };
+
+  const [total, cursos] = await Promise.all([
+    Curso.countDocuments(query),
+    Curso.find(query)
+      .skip(Number(desde))
+      .limit(Number(limite))
+      .populate("usuario", "nombre")
+      .populate("categoria", "nombre"),
+  ]);
+
+  res.json({
+    total,
+    cursos,
+  });
+};
+
+const obtenerCurso = async (req = request, res = response) => {
+  const { id } = req.params;
+
+  const curso = await Curso.findById(id)
+    .populate("usuario", "nombre")
+    .populate("categoria", "nombre");
+
+  res.json({
+    curso,
+  });
+};
+
 //CONTROLADOR POST
 const crearCurso = async (req = request, res = response) => {
   const { precio, categoria, img, descripcion } = req.body;
@@ -36,6 +69,55 @@ const crearCurso = async (req = request, res = response) => {
   }
 };
 
+//CONTROLADOR PUT
+
+const actualizarCurso = async (req = request, res = response) => {
+  const { id } = req.params;
+  const { precio, categoria, descripcion, img, destacado } = req.body;
+
+  const usuario = req.usuario._id;
+
+  const data = {
+    precio,
+    descripcion,
+    categoria,
+    img,
+    destacado,
+    usuario,
+  };
+
+  if (req.body.nombre) {
+    data.nombre = req.body.nombre.toUpperCase();
+  }
+
+  const curso = await Curso.findByIdAndUpdate(id, data, { new: true });
+
+  res.status(201).json({
+    msg: "Curso actualizado!",
+    curso,
+  });
+};
+
+//CONTROLADOR DELETE
+
+const borrarCurso = async (req = request, res = response) => {
+  const { id } = req.params;
+
+  const cursoEliminado = await Curso.findByIdAndUpdate(
+    id,
+    { estado: false },
+    { new: true }
+  );
+
+  res.json({
+    msg: `Curso eliminado! - ${cursoEliminado}`,
+  });
+};
+
 module.exports = {
+  obtenerCursos,
+  obtenerCurso,
   crearCurso,
+  actualizarCurso,
+  borrarCurso,
 };

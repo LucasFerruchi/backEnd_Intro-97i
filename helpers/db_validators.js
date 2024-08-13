@@ -19,7 +19,7 @@ const esRolValido = async (rol) => {
 };
 
 const esIdValido = async (id) => {
-  const exiteUsuario = await Usuario.findById({ id });
+  const exiteUsuario = await Usuario.findById(id);
 
   if (!exiteUsuario) {
     throw new Error(`El ${id} no se encuentra en la base de datos!`);
@@ -34,9 +34,18 @@ const esCategoriaValido = async (nombre) => {
   }
 };
 
+const esCursoValido = async (id) => {
+  const existeCurso = await Curso.findById(id);
+
+  if (!existeCurso) {
+    throw new Error(`El Id ${id} no corresponde a un curso existente!`);
+  }
+};
+
 module.exports = {
   esMailValido,
   esRolValido,
   esIdValido,
   esCategoriaValido,
+  esCursoValido,
 };

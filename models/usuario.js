@@ -20,7 +20,7 @@ const UsuarioSchema = Schema({
     required: [true, "Este dato es obligatorio!"],
     // ----
     // enum: ["USER_ROLE", "ADMIN_ROLE"],
-    default: "USER_ROLE",
+    // default: "USER_ROLE",
   },
   estado: {
     type: Boolean,
