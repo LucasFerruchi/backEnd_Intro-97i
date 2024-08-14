@@ -15,7 +15,7 @@ const {
   obtenerCursos,
 } = require("../controllers/cursosCtrl");
 
-//GET
+//RUTA GET
 router.get("/", obtenerCursos);
 
 router.get(
@@ -40,14 +40,20 @@ router.post(
   crearCurso
 );
 
-//PUT
+//RUTA PUT
 router.put(
   "/:id",
-  [validarJWT, esAdminRol, check("id").custom(esCursoValido), validarCampos],
+  [
+    validarJWT,
+    esAdminRol,
+    check("id", "El id no es valido").isMongoId(),
+    check("id").custom(esCursoValido),
+    validarCampos,
+  ],
   actualizarCurso
 );
 
-//DELETE
+//RUTA DELETE
 
 router.delete(
   "/:id",

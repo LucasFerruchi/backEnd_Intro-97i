@@ -43,7 +43,7 @@ const crearCurso = async (req = request, res = response) => {
 
   if (cursoDB) {
     res.status(400).json({
-      msg: `El curso ${cursoDB.nombre} ya existes`,
+      msg: `El curso ${cursoDB.nombre} ya existe`,
     });
   }
 
@@ -64,7 +64,7 @@ const crearCurso = async (req = request, res = response) => {
   if (curso) {
     res.status(201).json({
       curso,
-      msg: "Elcurso fue creada con exito!",
+      msg: "El curso fue creado con exito!",
     });
   }
 };
