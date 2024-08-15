@@ -1,6 +1,7 @@
 const Usuario = require("../models/usuario");
 const Rol = require("../models/rol");
 const Categoria = require("../models/categorias");
+const Curso = require("../models/curso");
 
 const esMailValido = async (correo) => {
   const exiteCorreo = await Usuario.findOne({ correo });
@@ -26,11 +27,19 @@ const esIdValido = async (id) => {
   }
 };
 
-const esCategoriaValido = async (nombre) => {
-  const existeCategoria = await Categoria.findOne({ nombre });
+const esCategoriaValido = async (id) => {
+  const existeCategoria = await Categoria.findById(id);
 
-  if (existeCategoria) {
-    throw new Error(`La categoria ya existe en la DB`);
+  if (!existeCategoria) {
+    throw new Error(`La categoria no existe en la DB, revise el ID!`);
+  }
+};
+
+const esCursoValido = async (id) => {
+  const existeCurso = await Curso.findById(id);
+
+  if (!existeCurso) {
+    throw new Error(`El Id ${id} no corresponde a un curso existente!`);
   }
 };
 
@@ -39,4 +48,5 @@ module.exports = {
   esRolValido,
   esIdValido,
   esCategoriaValido,
+  esCursoValido,
 };

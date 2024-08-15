@@ -9,6 +9,7 @@ const {
   esMailValido,
   esRolValido,
   esIdValido,
+  esCursoValido,
 } = require("../helpers/db_validators");
 
 const {
@@ -47,7 +48,7 @@ router.put(
   [
     validarJWT,
     check("id", "No es un ID valido!").isMongoId(),
-    check("id").custom(esIdValido),
+    check("id").custom(esCursoValido),
     validarCampos,
   ],
   usuariosPut
